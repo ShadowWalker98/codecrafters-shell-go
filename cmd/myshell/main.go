@@ -55,6 +55,12 @@ func main() {
 					return
 				}
 			} else if firstCommand == "cd" {
+				if commandSplit[1] == "~" {
+					err := os.Chdir(os.Getenv("HOME"))
+					if err != nil {
+						return
+					}
+				}
 				curr, _ := os.Getwd()
 				p := strings.Trim(commandSplit[1], "\n\r ")
 				if !filepath.IsAbs(p) {
