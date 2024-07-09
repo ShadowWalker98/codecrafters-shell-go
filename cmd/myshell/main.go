@@ -52,6 +52,10 @@ func main() {
 				if err != nil {
 					return
 				}
+			} else if firstCommand == "cd" {
+				if err := os.Chdir(commandSplit[1]); err != nil {
+					fmt.Fprintf(os.Stdout, "%s: No such file or directory\n", command)
+				}
 			}
 		} else {
 			handleProgramRunning(commandSplit, paths)
