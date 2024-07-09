@@ -60,16 +60,16 @@ func main() {
 					if err != nil {
 						return
 					}
+				} else {
+					curr, _ := os.Getwd()
+					p := strings.Trim(commandSplit[1], "\n\r ")
+					if !filepath.IsAbs(p) {
+						p = filepath.Join(curr, p)
+					}
+					if err := os.Chdir(p); err != nil {
+						fmt.Fprintf(os.Stdout, "%s: No such file or directory\n", p)
+					}
 				}
-				curr, _ := os.Getwd()
-				p := strings.Trim(commandSplit[1], "\n\r ")
-				if !filepath.IsAbs(p) {
-					p = filepath.Join(curr, p)
-				}
-				if err := os.Chdir(p); err != nil {
-					fmt.Fprintf(os.Stdout, "%s: No such file or directory\n", p)
-				}
-
 			}
 		} else {
 			handleProgramRunning(commandSplit, paths)
