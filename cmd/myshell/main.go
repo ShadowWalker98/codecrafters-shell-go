@@ -19,7 +19,7 @@ func main() {
 		fmt.Println("Error encountered while receiving input")
 	}
 
-	_, err = fmt.Fprint(os.Stdout, command[:len(command)-1]+": command not found")
+	_, err = fmt.Fprint(os.Stdout, command[:len(command)-1]+": command not found\n")
 	if err != nil {
 		return
 	}
