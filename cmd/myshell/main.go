@@ -48,7 +48,7 @@ func main() {
 				if err != nil {
 					return
 				}
-				_, err = fmt.Fprint(os.Stdout, wd)
+				_, err = fmt.Fprint(os.Stdout, wd+"\n")
 				if err != nil {
 					return
 				}
