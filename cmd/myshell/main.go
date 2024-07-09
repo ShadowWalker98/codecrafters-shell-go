@@ -59,4 +59,7 @@ func handlePathQueries(typeArg1 string) {
 		}
 	}
 	_, err := fmt.Fprint(os.Stdout, typeArg1+": not found\n")
+	if err != nil {
+		fmt.Println("Error while printing")
+	}
 }
