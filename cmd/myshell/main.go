@@ -20,5 +20,6 @@ func main() {
 		fmt.Println("Error encountered while receiving input")
 	}
 	command = strings.Replace(command, "\r\n", "", -1)
-	fmt.Println(command + ": command not found")
+	command = command + ": command not found"
+	fmt.Println(command)
 }
