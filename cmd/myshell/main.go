@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -19,9 +18,8 @@ func main() {
 	if err != nil {
 		fmt.Println("Error encountered while receiving input")
 	}
-	command = strings.Replace(command, "\r\n", "", -1)
-	command = command + ": command not found"
-	_, err = fmt.Fprint(os.Stdout, command)
+
+	_, err = fmt.Fprint(os.Stdout, command[:len(command)-1]+": command not found")
 	if err != nil {
 		return
 	}
