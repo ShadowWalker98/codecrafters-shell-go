@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 )
 
@@ -54,8 +55,13 @@ func main() {
 					return
 				}
 			} else if firstCommand == "cd" {
-				if err := os.Chdir(commandSplit[1]); err != nil {
-					fmt.Fprintf(os.Stdout, "%s: No such file or directory\n", commandSplit[1])
+				curr, _ := os.Getwd()
+				p := strings.Trim(commandSplit[1], "\n\r ")
+				if !filepath.IsAbs(p) {
+					p = filepath.Join(curr, p)
+				}
+				if err := os.Chdir(p); err != nil {
+					fmt.Fprintf(os.Stdout, "%s: No such file or directory\n", p)
 				}
 
 			}
