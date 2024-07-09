@@ -14,6 +14,7 @@ func main() {
 	validCommands["exit"] = true
 	validCommands["echo"] = true
 	validCommands["type"] = true
+	validCommands["pwd"] = true
 
 	env := os.Getenv("PATH")
 	paths := strings.Split(env, ":")
@@ -41,6 +42,15 @@ func main() {
 					_, err = fmt.Fprint(os.Stdout, typeArg1+" is a shell builtin\n")
 				} else {
 					handlePathQueries(typeArg1, paths)
+				}
+			} else if firstCommand == "pwd" {
+				wd, err := os.Getwd()
+				if err != nil {
+					return
+				}
+				_, err = fmt.Fprint(os.Stdout, wd)
+				if err != nil {
+					return
 				}
 			}
 		} else {
