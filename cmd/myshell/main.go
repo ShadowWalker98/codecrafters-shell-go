@@ -24,4 +24,6 @@ func main() {
 		return
 	}
 
+	command, err = bufio.NewReader(os.Stdin).ReadString('\n')
+
 }
