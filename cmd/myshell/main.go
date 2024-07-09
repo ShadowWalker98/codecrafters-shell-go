@@ -15,6 +15,7 @@ func main() {
 	validCommands["echo"] = true
 	validCommands["type"] = true
 	validCommands["pwd"] = true
+	validCommands["cd"] = true
 
 	env := os.Getenv("PATH")
 	paths := strings.Split(env, ":")
@@ -56,6 +57,7 @@ func main() {
 				if err := os.Chdir(commandSplit[1]); err != nil {
 					fmt.Fprintf(os.Stdout, "%s: No such file or directory\n", command)
 				}
+
 			}
 		} else {
 			handleProgramRunning(commandSplit, paths)
