@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -13,6 +14,10 @@ func main() {
 	validCommands["exit"] = true
 	validCommands["echo"] = true
 	validCommands["type"] = true
+
+	env := os.Getenv("PATH")
+	paths := strings.Split(env, ":")
+
 	for {
 		_, err := fmt.Fprint(os.Stdout, "$ ")
 		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
@@ -35,19 +40,16 @@ func main() {
 				if _, present := validCommands[typeArg1]; present {
 					_, err = fmt.Fprint(os.Stdout, typeArg1+" is a shell builtin\n")
 				} else {
-					handlePathQueries(typeArg1)
+					handlePathQueries(typeArg1, paths)
 				}
 			}
 		} else {
-			_, err = fmt.Fprint(os.Stdout, command+": command not found\n")
+			handleProgramRunning(commandSplit, paths)
 		}
 	}
 }
 
-func handlePathQueries(typeArg1 string) {
-	env := os.Getenv("PATH")
-	paths := strings.Split(env, ":")
-
+func handlePathQueries(typeArg1 string, paths []string) {
 	for _, path := range paths {
 		exec := path + "/" + typeArg1
 		if _, err := os.Stat(exec); err == nil {
@@ -62,4 +64,37 @@ func handlePathQueries(typeArg1 string) {
 	if err != nil {
 		fmt.Println("Error while printing")
 	}
+}
+
+func handleProgramRunning(commandSplit []string, paths []string) {
+	firstCommand := strings.TrimRight(commandSplit[0], "\n")
+	if findProgram(firstCommand, paths) {
+		cmd := exec.Command(firstCommand, commandSplit[1:]...)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
+		err := cmd.Run()
+		if err != nil {
+			_, err := fmt.Fprint(os.Stderr, "Error while executing command")
+			if err != nil {
+				return
+			}
+		}
+	} else {
+		_, err := fmt.Fprint(os.Stdout, firstCommand+": command not found\n")
+		if err != nil {
+			fmt.Println("Error occurred")
+		}
+	}
+
+}
+
+func findProgram(program string, paths []string) bool {
+	for _, path := range paths {
+		cmdPath := path + "/" + program
+		if _, err := os.Stat(cmdPath); err == nil {
+			return true
+		}
+	}
+	return false
 }
