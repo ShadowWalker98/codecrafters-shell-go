@@ -42,9 +42,9 @@ func main() {
 						if _, err := os.Stat(exec); err == nil {
 							_, err := fmt.Fprintf(os.Stdout, "%v is %v\n", typeArg1, exec)
 							if err != nil {
-								return
+								continue
 							}
-							return
+							continue
 						}
 					}
 					_, err = fmt.Fprint(os.Stdout, typeArg1+": not found\n")
