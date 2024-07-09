@@ -35,6 +35,18 @@ func main() {
 				if _, present := validCommands[typeArg1]; present {
 					_, err = fmt.Fprint(os.Stdout, typeArg1+" is a shell builtin\n")
 				} else {
+					env := os.Getenv("PATH")
+					paths := strings.Split(env, ":")
+					for _, path := range paths {
+						exec := path + "/" + typeArg1
+						if _, err := os.Stat(exec); err == nil {
+							_, err := fmt.Fprintf(os.Stdout, "%v is %v\n", typeArg1, exec)
+							if err != nil {
+								return
+							}
+							return
+						}
+					}
 					_, err = fmt.Fprint(os.Stdout, typeArg1+": not found\n")
 				}
 			}
