@@ -49,7 +49,7 @@ func handlePathQueries(typeArg1 string) {
 	paths := strings.Split(env, ":")
 
 	for _, path := range paths {
-		exec := path + "/" + path
+		exec := path + "/" + typeArg1
 		if _, err := os.Stat(exec); err == nil {
 			_, err := fmt.Fprintf(os.Stdout, "%v is %v\n", typeArg1, exec)
 			if err != nil {
