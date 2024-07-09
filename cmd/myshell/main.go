@@ -21,5 +21,9 @@ func main() {
 	}
 	command = strings.Replace(command, "\r\n", "", -1)
 	command = command + ": command not found"
-	fmt.Println(command)
+	_, err = fmt.Fprint(os.Stdout, command)
+	if err != nil {
+		return
+	}
+
 }
